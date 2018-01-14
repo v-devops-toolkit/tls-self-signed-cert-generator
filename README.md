@@ -1,55 +1,22 @@
-# SSL certificates
+# SSL certificates for Devbox
 
-## 1. Generate
+To generate certificates run the following commands:
 
-To generate certificates run:
-
-```
-vagrant up
-vagrant ssh
-cd /vagrant
-./build.sh
-```
+    vagrant up
+    vagrant ssh
+    cd /vagrant
+    
+    ./build.sh app.YourDomain.lh
 
 The certificates are stored in:
 
-```
-ca_directory/app.example.lh.cacert.pem
-server/app.example.lh.cert.pem
-server/app.example.lh.key.pem
-```
+    ca_directory/app.YourDomain.lh.cacert.pem
+    server/app.YourDomain.lh.cert.pem
+    server/app.YourDomain.lh.key.pem
 
-## 2. How to change domain?
+The certificates are to be used in:
 
-### 2.1. Cleanup old certs
+* RabbitMQ container
+* Apache container
 
-```
-vagrant ssh
-cd /vagrant
-./clean-dirs.sh
-./init-dirs.sh
-```
-
-Commit changes.
-
-### 2.2. Search & replace
-
-Search and replace:
-
-```
-app.example.lh   ===>   somedomain.example.lh
-```
-
-Commit changes.
-
-### 2.3. Generate new certs
-
-```
-vagrant up
-vagrant ssh
-cd /vagrant
-./build.sh
-```
-
-Commit changes.
-
+For more info about the commands used go to: https://www.rabbitmq.com/ssl.html

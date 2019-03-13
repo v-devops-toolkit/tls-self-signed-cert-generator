@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-DOMAIN=app.example.lh
+DOMAIN=$1
 
 ./clean-dirs.sh
-./init-dirs.sh
+./init-dirs.sh ${DOMAIN}
 ./gen-ca.sh ${DOMAIN}
 ./gen-server.sh ${DOMAIN}

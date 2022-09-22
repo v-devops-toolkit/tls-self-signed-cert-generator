@@ -1,11 +1,7 @@
-# SSL certificates for Devbox
+# Generate self-signet SSL certificates
 
 To generate certificates run the following commands:
 
-    vagrant up
-    vagrant ssh
-    cd /vagrant
-    
     ./build.sh app.YourDomain.lh
 
 The certificates are stored in:
@@ -14,9 +10,7 @@ The certificates are stored in:
     server/app.YourDomain.lh.cert.pem
     server/app.YourDomain.lh.key.pem
 
-The certificates are to be used in:
+## How to validate cert file?
 
-* RabbitMQ container
-* Apache container
-
-For more info about the commands used go to: https://www.rabbitmq.com/ssl.html
+    openssl x509 -in CERTIFICATE_FILE -text -noout
+    openssl x509 -in example.com.cert.pem -text -noout

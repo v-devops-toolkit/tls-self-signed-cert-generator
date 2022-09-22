@@ -4,7 +4,10 @@ DOMAIN=$1
 
 mkdir -p server
 cd server
+
+# the command to generate KEY file
 openssl genrsa -out ${DOMAIN}.key.pem 2048
+
 openssl req -new -key ${DOMAIN}.key.pem -out ${DOMAIN}.req.pem -outform PEM \
     -subj /CN=${DOMAIN}/O=server/ -nodes
 cd ../ca_directory

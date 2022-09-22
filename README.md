@@ -14,3 +14,7 @@ The certificates are stored in:
 
     openssl x509 -in CERTIFICATE_FILE -text -noout
     openssl x509 -in example.com.cert.pem -text -noout
+
+Validate input format PEM:
+
+    openssl rsa -in CERTIFICATE_FILE -pubout -inform pem -check

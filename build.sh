@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+
+# TODO add if param is not set
+
 DOMAIN=$1
 
 ./clean-dirs.sh

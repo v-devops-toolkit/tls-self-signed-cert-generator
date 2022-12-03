@@ -6,7 +6,6 @@ To generate certificates run the following commands:
 
 The certificates are stored in:
 
-    ca_directory/app.YourDomain.lh.cacert.pem
     server/app.YourDomain.lh.cert.pem
     server/app.YourDomain.lh.key.pem
 
@@ -15,8 +14,8 @@ The certificates are stored in:
 
 Generate man page in txt format:
 
-    man openssl | col -b > man-page-openssl.txt
-    man ssh-keygen | col -b > man-page-ssh-keygen.txt
+    man openssl | col -b > man/man-page-openssl.txt
+    man ssh-keygen | col -b > man/man-page-ssh-keygen.txt
 
 Further Reading:
 

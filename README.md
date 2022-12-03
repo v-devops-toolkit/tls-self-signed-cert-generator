@@ -1,4 +1,4 @@
-# Generate self-signet SSL certificates
+# TLS Self-Signed Cert Generator
 
 To generate certificates run the following commands:
 

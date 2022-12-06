@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
-function clean_dirs() {
+_clean_dirs() {
   rm -rf ca_directory
   rm -rf server
 }
 
-function init_dirs() {
+_init_dirs() {
   mkdir -p ca_directory
   cat openssl.cnf.template | sed -e "s/XXX-TEMPLATE-DOMAIN-XXX/${1}/g" >ca_directory/openssl.cnf
   mkdir -p ca_directory/certs
@@ -15,16 +15,16 @@ function init_dirs() {
   touch ca_directory/index.txt
 }
 
-function gen_ca() {
+_gen_ca() {
   cd ca_directory
 
   openssl req -x509 -config openssl.cnf -newkey rsa:2048 -days 365 \
-      -out ${1}.cacert.pem -outform PEM -subj /CN=${1}/ -nodes
+    -out ${1}.cacert.pem -outform PEM -subj /CN=${1}/ -nodes
 
   cd ..
 }
 
-function gen_server() {
+_gen_server() {
 
   mkdir -p server
   cd server
@@ -33,16 +33,15 @@ function gen_server() {
   openssl genrsa -out ${1}.key.pem 2048
 
   openssl req -new -key ${1}.key.pem -out ${1}.req.pem -outform PEM \
-      -subj /CN=${1}/O=server/ -nodes
+    -subj /CN=${1}/O=server/ -nodes
 
   cd ../ca_directory
   openssl ca -config openssl.cnf -in ../server/${1}.req.pem -out \
-      ../server/${1}.cert.pem -notext -batch -extensions server_ca_extensions
+    ../server/${1}.cert.pem -notext -batch -extensions server_ca_extensions
   cd ..
 
   rm server/${1}.req.pem
 }
-
 
 if ! [ -x "$(command -v openssl)" ]; then
   echo "Command not found: openssl"
@@ -54,8 +53,7 @@ if [ $# -eq 0 ]; then
   exit 2
 fi
 
-clean_dirs
-init_dirs ${1}
-gen_ca ${1}
-gen_server ${1}
-
+_clean_dirs
+_init_dirs ${1}
+_gen_ca ${1}
+_gen_server ${1}

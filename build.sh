@@ -16,31 +16,51 @@ _init_dirs() {
 }
 
 _gen_ca() {
-  cd ca_directory
+  (
+    # the script needs to enter ca_directory
+    # because config file openssl.cnf contains relative paths
+    cd ca_directory
 
-  openssl req -x509 -config openssl.cnf -newkey rsa:2048 -days 365 \
-    -out ${1}.cacert.pem -outform PEM -subj /CN=${1}/ -nodes
-
-  cd ..
+    openssl req -x509 \
+      -config openssl.cnf \
+      -newkey rsa:2048 \
+      -days 365 \
+      -out "${1}.cacert.pem" \
+      -outform PEM \
+      -subj "/CN=${1}/" \
+      -nodes
+  )
 }
 
 _gen_server() {
 
   mkdir -p server
-  cd server
 
-  # the command to generate the key file
-  openssl genrsa -out ${1}.key.pem 2048
+  # generate the key file
+  openssl genrsa -out "server/${1}.key.pem" 2048
 
-  openssl req -new -key ${1}.key.pem -out ${1}.req.pem -outform PEM \
-    -subj /CN=${1}/O=server/ -nodes
+  openssl req \
+    -new \
+    -key "server/${1}.key.pem" \
+    -out "server/${1}.req.pem" \
+    -outform PEM \
+    -subj "/CN=${1}/O=server/" \
+    -nodes
 
-  cd ../ca_directory
-  openssl ca -config openssl.cnf -in ../server/${1}.req.pem -out \
-    ../server/${1}.cert.pem -notext -batch -extensions server_ca_extensions
-  cd ..
+  (
+    # the script needs to enter ca_directory
+    # because config file openssl.cnf contains relative paths
+    cd ca_directory
+    openssl ca \
+      -config openssl.cnf \
+      -in "../server/${1}.req.pem" \
+      -out "../server/${1}.cert.pem" \
+      -notext \
+      -batch \
+      -extensions server_ca_extensions
+  )
 
-  rm server/${1}.req.pem
+  rm "server/${1}.req.pem"
 }
 
 if ! [ -x "$(command -v openssl)" ]; then
@@ -54,6 +74,6 @@ if [ $# -eq 0 ]; then
 fi
 
 _clean_dirs
-_init_dirs ${1}
-_gen_ca ${1}
-_gen_server ${1}
+_init_dirs "${1}"
+_gen_ca "${1}"
+_gen_server "${1}"

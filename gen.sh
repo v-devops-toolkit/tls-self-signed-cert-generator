@@ -1,5 +1,15 @@
 #!/usr/bin/env bash
 
+set -o errexit
+
+_help() {
+  echo "USAGE: ${0} DOMAIN" >&2
+  echo "Examples:" >&2
+  echo "    ${0} example.net" >&2
+  echo "    ${0} foo.com" >&2
+  echo "    ${0} bar.lh" >&2
+}
+
 _clean_dirs() {
   rm -rf ca_directory
   rm -rf server
@@ -69,7 +79,7 @@ if ! [ -x "$(command -v openssl)" ]; then
 fi
 
 if [ $# -eq 0 ]; then
-  echo Missing required parameter: domain
+  _help
   exit 2
 fi
 

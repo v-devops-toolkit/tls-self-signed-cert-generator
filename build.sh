@@ -19,7 +19,7 @@ _gen_ca() {
   cd ca_directory
 
   openssl req -x509 -config openssl.cnf -newkey rsa:2048 -days 365 \
-      -out ${1}.cacert.pem -outform PEM -subj /CN=${1}/ -nodes
+    -out ${1}.cacert.pem -outform PEM -subj /CN=${1}/ -nodes
 
   cd ..
 }
@@ -33,16 +33,15 @@ _gen_server() {
   openssl genrsa -out ${1}.key.pem 2048
 
   openssl req -new -key ${1}.key.pem -out ${1}.req.pem -outform PEM \
-      -subj /CN=${1}/O=server/ -nodes
+    -subj /CN=${1}/O=server/ -nodes
 
   cd ../ca_directory
   openssl ca -config openssl.cnf -in ../server/${1}.req.pem -out \
-      ../server/${1}.cert.pem -notext -batch -extensions server_ca_extensions
+    ../server/${1}.cert.pem -notext -batch -extensions server_ca_extensions
   cd ..
 
   rm server/${1}.req.pem
 }
-
 
 if ! [ -x "$(command -v openssl)" ]; then
   echo "Command not found: openssl"
@@ -58,4 +57,3 @@ _clean_dirs
 _init_dirs ${1}
 _gen_ca ${1}
 _gen_server ${1}
-

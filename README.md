@@ -22,14 +22,18 @@ Further Reading:
 * https://stackoverflow.com/questions/4294689/how-to-generate-an-openssl-key-using-a-passphrase-from-the-command-line
 
 
-## How to validate cert file?
+## How to print cert in text format?
 
-    openssl x509 -in CERTIFICATE_FILE -text -noout
+    openssl x509 -text -noout -in CERTIFICATE_FILE
     openssl x509 -in example.com.cert.pem -text -noout
 
-## How to validate input format PEM?
+## How to print key in text format?
 
-    openssl rsa -in CERTIFICATE_FILE -pubout -inform pem -check
+    # print public key
+    openssl rsa -pubout -inform pem -check -in CERTIFICATE_FILE
+
+    # print all info
+    openssl rsa -text -noout -in PRIVATE_KEY_FILE
 
 ## How to generate private key file?
 
@@ -49,7 +53,7 @@ To get rid of this passphrase run:
     openssl rsa -in PRIVATE_WITH_PASSPHRASE -out PRIVATE_WITHOUT_PASSPHRASE
 
 
-**CAUTION** 
+**CAUTION**
 Without option to cipher the key the file is not ciphered.
 Even if you use `--passout` param.
 
@@ -62,11 +66,6 @@ The command to generate password protected private key:
     # you will be asked for passphrase
     openssl genrsa -aes256 -out PRIVATE_KEY_FILE_WITH_PASS_PHRASE 2048
 
-
-## How to view keyfile?
-
-    openssl rsa -text -noout -in yourdomain.key
-    openssl rsa -text -noout -in PRIVATE_KEY_FILE
 
 ## How to get rid of pass phrase?
 
@@ -88,3 +87,15 @@ Two files:
     PRIVATE_KEY_C
 
 should be identical!
+
+
+## Verify the cert with: PEM->DER->PEM conversion
+
+```
+openssl x509 -in example.cert.pem -out x.der -outform DER
+openssl x509 -in x.der -out x.pem -outform PEM -inform DER
+
+#x.pem should be identical as example.cert.pem
+```
+
+We should get identical PEM file.
